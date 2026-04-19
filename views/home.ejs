@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Organiser</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <h2 class="heading">Notes</h2>
+
+    <div class="note-header header-row">
+        <form action="/notes/create" method="get">
+            <button type="submit">+ new note</button>
+        </form>
+
+        <form action="/notes/search" method="get">
+            <input type="text" name="search" placeholder="Search" id="inp-bar"/>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="outer-box">
+        <% if (pinnedNotes.length> 0) { %>
+            <h3 class="heading">Pinned Notes</h3>
+            <div class="notes-section">
+
+                <% for (let note of pinnedNotes) { %>
+                    <div class="box pinned">
+                        <%- include("noteCard", { note }) %>
+                    </div>
+                    <% } %>
+            </div>
+            <% } %>
+
+                <h3 class="heading">All Notes</h3>
+                <div class="notes-section">
+
+                    <% for (let note of otherNotes) { %>
+                        <div class="box">
+                            <%- include("noteCard", { note }) %>
+                        </div>
+                        <% } %>
+                </div>
+    </div>
+</body>
+
+</html>

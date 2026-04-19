@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change/Update details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h2>Edit note for id: <%= note._id %> </h2>
+    <form action="/notes/<%= note._id%>?_method=PUT" method="post">
+        <input type="text" name="title" value="<%= note.title %>" />
+        <textarea name="content" rows="10" cols="30"><%= note.content %></textarea>
+        <button onclick="return confirm('Save changes? This action is permanent.')">Save Changes</button>
+    </form>
+</body>
+</html>

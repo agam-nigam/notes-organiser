@@ -20,18 +20,6 @@ async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/notes_app");
 }
 
-// Initial testing route
-// app.get("/", (req, res) => {
-//     console.log("Working");
-//     res.send("Working");
-// });
-
-// Index Route - shows all the notes
-// app.get("/notes", async (req, res) => {
-//     let notes = await Note.find();
-//     res.render("home.ejs", { notes });
-// });
-
 app.get("/notes", async (req, res) => {
     let notes = await Note.find().sort({ updatedAt: -1, createdAt: -1 });
 
@@ -48,13 +36,14 @@ app.get("/notes/create", (req, res) => {
 
 // add to db new note
 app.post("/notes", (req, res) => {
-    let { title, content } = req.body;
+    let { title, content, color } = req.body;
     let newNote = new Note({
         title: title,
         content: content,
+        color: color
     });
     newNote.save().then(res => console.log(newNote, "Note saved.")).catch(err => console.log(err));
-
+    console.log(req.body);
     res.redirect("/notes");
 });
 
@@ -68,9 +57,10 @@ app.get("/notes/:id/edit", async (req, res) => {
 // Applying changes in db
 app.put("/notes/:id", async (req, res) => {
     let { id } = req.params;
-    let { title: newTitle, content: newContent } = req.body;
-    let updatedNote = await Note.findByIdAndUpdate(id, { title: newTitle, content: newContent }, { runValidators: true, new: true });
+    let { title: newTitle, content: newContent, color: newColor } = req.body;
+    let updatedNote = await Note.findByIdAndUpdate(id, { title: newTitle, content: newContent, color: newColor }, { runValidators: true, new: true });
     console.log(updatedNote);
+    console.log(req.body);
     res.redirect("/notes");
 });
 
@@ -94,7 +84,7 @@ app.get("/notes/search", async (req, res) => {
                 { title: { $regex: search, $options: "i" } },
                 { content: { $regex: search, $options: "i" } },
             ]
-        }).sort({createdAt: -1, updatedAt: -1});
+        }).sort({ createdAt: -1, updatedAt: -1 });
     } else {
         // notes = await Note.find();
         res.render("emptySearch.ejs");
@@ -105,11 +95,21 @@ app.get("/notes/search", async (req, res) => {
 
 
 // Pin Route
+// app.patch("/notes/:id", async (req, res) => {
+//     const { id } = req.params;
+//     const note = await Note.findById(id);
+//     const updatedNote = await Note.findByIdAndUpdate(id, { pinned: !note.pinned }, { runValidators: true, new: true });
+
+//     res.redirect("/notes");
+// });
 app.patch("/notes/:id", async (req, res) => {
     const { id } = req.params;
     const note = await Note.findById(id);
-    const updatedNote = await Note.findByIdAndUpdate(id, { pinned: !note.pinned }, { runValidators: true, new: true });
-
+    await Note.findByIdAndUpdate(
+        id,
+        { pinned: !note.pinned },
+        { timestamps: false }
+    );
     res.redirect("/notes");
 });
 

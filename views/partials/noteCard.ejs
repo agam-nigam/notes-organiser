@@ -17,8 +17,8 @@
 <div class="note note-time">
   <span class="time-label"><%= isUpdated ? "Updated:" : "Created:" %></span>
   <span class="time-label">
-    <%= new Date(date).toLocaleTimeString() %><br/>
-    <%= new Date(date).toLocaleDateString() %>
+    <%= new Date(date).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' }) %> <br />
+    <%= new Date(date).toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' }) %>
   </span>
 </div>
 

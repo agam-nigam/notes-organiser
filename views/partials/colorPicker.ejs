@@ -1,0 +1,10 @@
+<label class="color-label">Card Color: </label>
+<div class="color-picker">
+    <% const colors=['#FDFAF4','#FFE566','#FFBDBD','#BDE0FF','#C1F0C1','#E8D5FF','#FFD9A0']; %>
+        <% for (let c of colors) { %>
+            <label class="swatch" style="--c:<%= c %>">
+                <input type="radio" name="color" value="<%= c %>" <%=(typeof note !=='undefined' ? note.color
+                    : '#FDFAF4' )===c ? 'checked' : '' %> />
+            </label>
+            <% } %>
+</div>

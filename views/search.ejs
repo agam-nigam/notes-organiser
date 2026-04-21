@@ -14,7 +14,7 @@
     <div class="page-container">
         <div class="notes-section">    
             <% for (let note of notes) { %>
-                <div class="box">
+                <div class="box" style='background-color: <%= note.color || "#FDFAF4" %>;'>
                     <%- include("partials/noteCard", { note }) %>
                 </div>
             <% } %>

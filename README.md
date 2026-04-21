@@ -2,11 +2,18 @@
 
 A full-stack notes management web application built with **Node.js**, **Express**, and **MongoDB**. Features a bold neo-brutalist UI with support for creating, editing, deleting, pinning, searching, and color-coding notes.
 
+> 🚀 Live Demo: [Notes Organiser](https://notes-organiser-5b5k.onrender.com/notes)
+
 ---
 
 ## 🖼️ Preview
 
 > A fast, minimal notes app with a bold neo-brutalist design — dot-grid background, offset card shadows, sticky-note style pinned items, and user-defined card colors.
+
+![Home Page](./assets/home.png)
+![Create Note Page](./assets/Create-note-page.png)
+![Edit Note Page](./assets/Edit-note-page.png)
+![Search Results](./assets/search-output.png)
 
 ---
 
@@ -42,6 +49,11 @@ A full-stack notes management web application built with **Node.js**, **Express*
 notes-organiser/
 ├── .vscode/
 │   └── settings.json            # VS Code workspace settings
+├── assets/
+│   ├── home.png
+│   ├── Create-note-page.png
+│   ├── Edit-note-page.png
+│   └── search-output.png
 ├── models/
 │   └── note.js                  # Mongoose Note schema (title, content, color, pinned, timestamps)
 ├── public/

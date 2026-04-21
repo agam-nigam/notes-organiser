@@ -10,16 +10,18 @@
 
 <body>
     <h2>Search results for: "<%= search %>"</h2>
-    <div class="outer-box">
-
-        <% for (let note of notes) { %>
-
-            <div class="box">
-                <%- include("noteCard", { note }) %>
-            </div>
+    
+    <div class="page-container">
+        <div class="notes-section">    
+            <% for (let note of notes) { %>
+                <div class="box">
+                    <%- include("partials/noteCard", { note }) %>
+                </div>
             <% } %>
+        </div>
+            
     </div>
-
+    <%- include("partials/footer") %>
 </body>
 
 </html>

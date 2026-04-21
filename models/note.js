@@ -12,6 +12,10 @@ const noteSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    color: {
+        type: String,
+        default: "#FDFAF4"
+    }
 }, { timestamps: true });
 
 const Note = mongoose.model("Note", noteSchema);

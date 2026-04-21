@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add new note</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
-    <h2>Add new note details:</h2>
 
-    <form action="/notes" method="post">
-        <input type="text" name="title" placeholder="Add title here" />
-        <input type="text" name="content" placeholder="Add notes here" />
-        <button type="submit" onclick="return confirm('Do you want to save this note?')">Add!</button>
-    </form>
+<body class="form-page">
+    <!-- <div class="form-container"> -->
 
+        <h2>Create a New Note</h2>
+        
+        <form action="/notes" method="post">
+            <input type="text" name="title" placeholder="Add title here" />
+            <textarea name="content" rows="10" cols="30" placeholder="Add notes here"></textarea>
+            <%- include("partials/colorPicker") %>
+            
+            <button type="submit" onclick="return confirm('Do you want to save this note?')">Add!</button>
+        </form>
+        
+    <!-- </div> -->
+    <%- include("partials/footer") %>
 </body>
+
 </html>

@@ -20,6 +20,10 @@ async function main() {
     await mongoose.connect(process.env.MONGO_URL || "mongodb://127.0.0.1:27017/notes_app");
 }
 
+app.get("/", (req, res) => {
+    res.redirect("/notes");
+});
+
 app.get("/notes", async (req, res) => {
     let notes = await Note.find().sort({ updatedAt: -1, createdAt: -1 });
 

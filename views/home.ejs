@@ -18,7 +18,7 @@
 
         <form action="/notes/search" method="get">
             <input type="text" name="search" placeholder="Search" id="inp-bar"/>
-            <button type="submit">Search</button>
+            <button type="submit" onclick="setTimeout(() => this.form.reset(), 0)">Search</button>
         </form>
     </div>
 
@@ -28,8 +28,8 @@
             <div class="notes-section">
 
                 <% for (let note of pinnedNotes) { %>
-                    <div class="box pinned">
-                        <%- include("noteCard", { note }) %>
+                    <div class="box pinned" style='background-color: <%= note.color || "#FFE566" %>;'>
+                         <%- include("partials/noteCard", { note }) %>
                     </div>
                     <% } %>
             </div>
@@ -39,12 +39,14 @@
                 <div class="notes-section">
 
                     <% for (let note of otherNotes) { %>
-                        <div class="box">
-                            <%- include("noteCard", { note }) %>
+                        <div class="box" style='background-color: <%= note.color || "#FDFAF4" %>;'>
+                            <%- include("partials/noteCard", { note }) %>
                         </div>
                         <% } %>
                 </div>
     </div>
+
+    <%- include("partials/footer") %>
 </body>
 
 </html>

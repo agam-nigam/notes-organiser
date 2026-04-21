@@ -17,7 +17,7 @@ main()
     .catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/notes_app");
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://127.0.0.1:27017/notes_app");
 }
 
 app.get("/notes", async (req, res) => {
@@ -95,13 +95,6 @@ app.get("/notes/search", async (req, res) => {
 
 
 // Pin Route
-// app.patch("/notes/:id", async (req, res) => {
-//     const { id } = req.params;
-//     const note = await Note.findById(id);
-//     const updatedNote = await Note.findByIdAndUpdate(id, { pinned: !note.pinned }, { runValidators: true, new: true });
-
-//     res.redirect("/notes");
-// });
 app.patch("/notes/:id", async (req, res) => {
     const { id } = req.params;
     const note = await Note.findById(id);

@@ -110,7 +110,7 @@ router.post("/forgot-password", async (req, res) => {
         `http://localhost:8080/reset-password/${token}`;
 
     await transporter.sendMail({
-        from: process.env.BREVO_EMAIL,
+        from: process.env.EMAIL,
         to: user.email,
         subject: "Password Reset",
         html: `

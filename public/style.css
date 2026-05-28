@@ -98,8 +98,8 @@ h3.heading {
 }
 
 /* Search form — takes all remaining space */
-.note-header form:last-child {
-  flex: 1 1 auto;
+.note-header form:nth-child(2) {
+  flex: 7 1 auto;
   gap: 0.5rem;
 }
 
@@ -118,6 +118,23 @@ h3.heading {
   min-width: 0;
 }
 
+.note-header input[type="text"]:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--border);
+}
+
+.welcome-text {
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.1rem;
+}
+
+.welcome-text strong {
+  color: var(--accent);
+}
+
 /* ─── Inputs ────────────────────────────── */
 input[type="text"],
 textarea {
@@ -134,6 +151,7 @@ textarea {
 }
 
 input[type="text"]:focus,
+button:focus,
 textarea:focus {
   box-shadow: 3px 3px 0 var(--accent);
   transform: translate(-1px, -1px);
@@ -168,13 +186,25 @@ button {
 }
 
 button:hover {
-  transform: translate(-2px, -2px);
+  /* transform: translate(-2px, -2px); */
   box-shadow: 6px 6px 0 var(--border);
 }
 
 button:active {
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 var(--border);
+}
+
+.note-header form .logout-btn {
+  background-color: var(--accent);
+  color: var(--surface);
+  border-color: var(--border);
+}
+
+.logout-btn:hover {
+  background: #FF4F1F;
+  color: var(--surface);
+  box-shadow: 6px 6px 0 var(--accent);
 }
 
 /* All note-header interactive elements — same height baseline */
@@ -194,7 +224,7 @@ button:active {
   align-items: stretch;
   gap: 0.6rem;
   padding: 0.8rem 1rem;
-  padding-top: 0.2rem;
+  padding-top: 0.1rem;
 }
 
 .header-row form {
@@ -229,6 +259,7 @@ button:active {
   font-family: var(--font-body);
   -webkit-appearance: none;
   appearance: none;
+  height: 42px;
 }
 
 #inp-bar {
@@ -275,13 +306,17 @@ button:active {
 
 /* "Create new note" — accent fill */
 .note-header form:first-child button {
-  background: var(--accent);
-  color: #fff;
+  background: #3FA66B;
+  color: var(--surface);
   border-color: var(--border);
 }
 
 .note-header form:first-child button:hover {
-  background: #d63a0e;
+  background: #2F855A;
+}
+
+.note-header form:first-child button:active {
+  background: #276749;
 }
 
 /* "Save Changes" button */
@@ -331,8 +366,115 @@ form>button:not([type]) {
 }
 
 .box:hover {
-  transform: translate(-3px, -3px);
+  /* transform: translate(-3px, -3px); */
   box-shadow: 9px 9px 0 var(--border);
+}
+
+/* Title — single line truncation */
+.title-text {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Expand title on card hover */
+.box:hover .title-text {
+  white-space: normal !important;
+  overflow: visible;
+  text-overflow: unset;
+  word-break: break-word;
+}
+
+/* ─── Modal ─────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-box {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: 8px 8px 0 var(--border);
+  width: 90vw;
+  max-width: 900px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid var(--border);
+  background: var(--bg);
+}
+
+.modal-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  flex: 1;                   /* prevents pushing close button */
+  margin-right: 1rem;
+}
+
+.modal-close {
+  background: var(--accent);
+  color: #fff;
+  border: 2px solid var(--border);
+  font-size: 1rem;
+  padding: 0.1rem 0.5rem;
+  box-shadow: 2px 2px 0 var(--border);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.modal-close:hover {
+  background: #d63a0e;
+  box-shadow: 3px 3px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+.modal-content {
+  padding: 1.2rem;
+  overflow-y: auto;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.box,
+.modal-box,
+button,
+input,
+textarea {
+  will-change: auto;
+  backface-visibility: hidden;
 }
 
 /* ─── Pinned Card ───────────────────────── */
@@ -372,6 +514,11 @@ form>button:not([type]) {
   border-bottom: 1px dashed #C8C0B4;
 }
 
+.note-card {
+  overflow: hidden;
+  min-width: 0;
+}
+
 .note:last-of-type {
   border-bottom: none;
 }
@@ -383,7 +530,28 @@ form>button:not([type]) {
   color: var(--text);
   margin-top: 0.25rem;
   word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.read-more-btn {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.5rem;
+  margin-top: 0.3rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  box-shadow: none;
+  letter-spacing: 0.08em;
+}
+
+.read-more-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 2px 2px 0 var(--accent);
+  transform: none;
 }
 
 /* time note */
@@ -450,8 +618,8 @@ form>button:not([type]) {
 
 /* Delete button */
 .note-footer form:nth-child(2) button {
-  background: #1A1A1A;
-  color: #fff;
+  background: #C44536;
+  color: var(--surface);
 }
 
 .note-footer form:nth-child(2) button:hover {
@@ -466,8 +634,20 @@ form>button:not([type]) {
   box-shadow: 2px 2px 0 var(--pin-border);
 }
 
+.note-footer form > button:hover, 
+.note-header form > input[type="text"]:hover, 
+.note-header form > button:hover {
+  box-shadow: 3px 3px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+.note-footer form > button:active,
+.note-header form > button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
 /* ─── Create / Edit Pages ───────────────── */
-body > h2 {
+body>h2 {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 800;
   text-transform: uppercase;
@@ -491,8 +671,8 @@ body.form-page > form {
   width: 100%;
   max-width: 520px;
 }
- 
-body > form {
+
+body>form {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -503,26 +683,33 @@ body > form {
   padding: 1.5rem;
   align-items: center;
 }
- 
-body > form input[type="text"],
-body > form textarea {
+
+body>form input[type="text"],
+body>form textarea {
   font-size: 0.9rem;
 }
- 
-body > form button {
+
+body>form button {
   align-self: center;
   background: var(--accent);
-  color: #fff;
+  color: var(--surface);
   font-size: 0.82rem;
   padding: 0.55rem 1.4rem;
 }
- 
-body > form button:hover {
+
+body>form button:hover {
   background: #d63a0e;
 }
 
-body.form-page > .site-footer {
+body.form-page>.site-footer {
   width: 100%;
+}
+
+body.form-page h2 {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  ont-size: clamp(1rem, 3vw, 1.8rem);
 }
 
 /* ─── Empty Search ──────────────────────── */
@@ -596,7 +783,7 @@ body>h2:not(.heading) {
 
 /* selected state */
 .swatch:has(input:checked) {
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--border);
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--border);
   transform: scale(1.2);
 }
 
@@ -657,4 +844,220 @@ body>h2:not(.heading) {
 
 .footer-divider {
   color: var(--muted);
+}
+
+/* ─── Create / Edit / Auth Pages ───────── */
+body:has(> .form-container) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.form-container h2 {
+  font-family: var(--font-head);
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.2rem;
+  line-height: 1;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  ont-size: clamp(1rem, 3vw, 1.8rem);
+}
+
+.form-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+.form-container form input[type="text"],
+.form-container form input[type="email"],
+.form-container form input[type="password"],
+.form-container form textarea {
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-container form button[type="submit"],
+.form-container form button:not([type]) {
+  align-self: center;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 0.82rem;
+  padding: 0.55rem 2rem;
+  margin-top: 0.25rem;
+}
+
+.form-container form button:hover {
+  background: #d63a0e;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  color: var(--text);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  width: 100%;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  box-shadow: 3px 3px 0 var(--accent);
+  transform: translate(-1px, -1px);
+}
+
+/* ─── Auth Links & Errors ───────────────── */
+.forgot-wrapper,
+.auth-link {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.auth-link a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1px;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.forgot-wrapper,
+.auth-link a:hover {
+  color: #d63a0e;
+  border-color: #d63a0e;
+}
+
+.auth-error {
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* footer pinned to bottom on auth pages */
+body:has(> .form-container) .site-footer {
+  margin-top: auto;
+  width: 100%;
+}
+
+/* mobile */
+@media (max-width: 600px) {
+  .form-container h2 {
+    white-space: normal;
+    font-size: 1.4rem;
+  }
+}
+
+/* ─── Flash Messages ────────────────────── */
+.flash {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 25%;
+  max-width: 320px;
+  min-width: 220px;
+
+  z-index: 9999;
+
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+
+  padding: 0.6rem 1rem;
+
+  border: 2px solid var(--border);
+  box-sizing: border-box;
+
+  animation: flashSlide 0.25s ease;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.flash-success {
+  background: #C1F0C1;
+  border-color: #2D7A2D;
+  box-shadow: 3px 3px 0 #2D7A2D;
+  color: #1A4A1A;
+}
+
+.flash-error {
+  background: #FFBDBD;
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 var(--accent);
+  color: #7A1A1A;
+}
+
+@keyframes flashSlide {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .flash {
+    width: calc(100% - 40px);
+    max-width: none;
+  }
+}
+
+/* ─── Forgot Password ────────────────────── */
+
+.forgot-wrapper {
+  width: 100%;
+  text-align: right;
+  margin-top: -0.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 0px;
+}
+
+.forgot-wrapper a {
+  color: var(--accent);
+  text-decoration: none;
+  padding-bottom: 1px;
+  transition: color 0.12s ease, border-color 0.12s ease;
 }

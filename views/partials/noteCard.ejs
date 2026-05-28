@@ -1,13 +1,27 @@
 <!-- title -->
 <div class="note">
     Title:
-    <p class="details"><%= note.title %></p>
+    <p class="details title-text" title="<%= note.title %>"><%= note.title %></p>
 </div>
 
 <!-- content -->
 <div class="note">
     Content:
-    <p class="details"><%= note.content %></p>
+    <p class="details content-text"><%= note.content.length > 100 ? note.content.substring(0, 100) + "..." : note.content %></p>
+    <% if (note.content.length > 100) { %>
+        <button class="read-more-btn" onclick="openModal('<%= note._id %>')">Read More</button>
+    <% } %>
+</div>
+
+<!-- modal -->
+<div class="modal-overlay" id="modal-<%= note._id %>">
+    <div class="modal-box">
+        <div class="modal-header">
+            <span class="modal-title"><%= note.title %></span>
+            <button class="modal-close" onclick="closeModal('<%= note._id %>')">&times;</button>
+        </div>
+        <div class="modal-content"><%= note.content %></div>
+    </div>
 </div>
 
 <!-- time -->
@@ -41,3 +55,26 @@
         </button>
     </form>
 </div>
+
+<script>
+function openModal(id) {
+    document.getElementById("modal-" + id).classList.add("active");
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal(id) {
+    document.getElementById("modal-" + id).classList.remove("active");
+    document.body.style.overflow = "auto";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".modal-overlay").forEach(modal => {
+        modal.addEventListener("click", function(e) {
+            if (e.target === this) {
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        });
+    });
+});
+</script>

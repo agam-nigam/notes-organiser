@@ -9,44 +9,50 @@
 </head>
 
 <body>
-    <h2 class="heading">Notes</h2>
+    <%- include("partials/flash") %>
+        <h2 class="heading">Notes</h2>
+        <p class="welcome-text">Welcome, <strong><%= currentUser.username %> 👋</strong></p>
+        
+        <div class="note-header header-row">
+            <form action="/notes/create" method="get">
+                <button type="submit">+ new note</button>
+            </form>
 
-    <div class="note-header header-row">
-        <form action="/notes/create" method="get">
-            <button type="submit">+ new note</button>
-        </form>
+            <form action="/notes/search" method="get">
+                <input type="text" name="search" placeholder="Search" id="inp-bar" />
+                <button type="submit" onclick="setTimeout(() => this.form.reset(), 0)">Search</button>
+            </form>
 
-        <form action="/notes/search" method="get">
-            <input type="text" name="search" placeholder="Search" id="inp-bar"/>
-            <button type="submit" onclick="setTimeout(() => this.form.reset(), 0)">Search</button>
-        </form>
-    </div>
+            <form action="/logout" method="get">
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
 
-    <div class="outer-box">
-        <% if (pinnedNotes.length> 0) { %>
-            <h3 class="heading">Pinned Notes</h3>
-            <div class="notes-section">
-
-                <% for (let note of pinnedNotes) { %>
-                    <div class="box pinned" style='background-color: <%= note.color || "#FFE566" %>;'>
-                         <%- include("partials/noteCard", { note }) %>
-                    </div>
-                    <% } %>
-            </div>
-            <% } %>
-
-                <h3 class="heading">All Notes</h3>
+        <div class="outer-box">
+            <% if (pinnedNotes.length> 0) { %>
+                <h3 class="heading">Pinned Notes</h3>
                 <div class="notes-section">
 
-                    <% for (let note of otherNotes) { %>
-                        <div class="box" style='background-color: <%= note.color || "#FDFAF4" %>;'>
+                    <% for (let note of pinnedNotes) { %>
+                        <div class="box pinned" style='background-color: <%= note.color || "#FFE566" %>;'>
                             <%- include("partials/noteCard", { note }) %>
                         </div>
                         <% } %>
                 </div>
-    </div>
+                <% } %>
 
-    <%- include("partials/footer") %>
+                    <h3 class="heading">All Notes</h3>
+                    <div class="notes-section">
+
+                        <% for (let note of otherNotes) { %>
+                            <div class="box" style='background-color: <%= note.color || "#FDFAF4" %>;'>
+                                <%- include("partials/noteCard", { note }) %>
+                            </div>
+                            <% } %>
+                    </div>
+        </div>
+
+        <%- include("partials/footer") %>
 </body>
 
 </html>

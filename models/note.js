@@ -15,6 +15,11 @@ const noteSchema = new mongoose.Schema({
     color: {
         type: String,
         default: "#FDFAF4"
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
     }
 }, { timestamps: true });
 

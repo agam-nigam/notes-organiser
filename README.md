@@ -48,7 +48,7 @@ A full-stack notes management web application built with **Node.js**, **Express*
 - Forgot password page with email-based reset
 - Secure token generation with 30-minute expiry
 - Token invalidated after single use
-- Email delivery via Nodemailer + Gmail SMTP
+- Email delivery via Nodemailer + Brevo SMTP
 
 ### 🎨 UI / UX
 - Neo-brutalist design — dot-grid background, offset shadows, bold typography
@@ -69,7 +69,7 @@ A full-stack notes management web application built with **Node.js**, **Express*
 | Database       | MongoDB + Mongoose                       |
 | Templating     | EJS (Embedded JavaScript)                |
 | Authentication | Passport.js + bcrypt + express-session   |
-| Email          | Nodemailer + Gmail SMTP                  |
+| Email          | Nodemailer + Brevo SMTP                  |
 | Styling        | Custom CSS (Neo-Brutalist Design)        |
 | HTTP Override  | method-override (PUT / PATCH / DELETE)   |
 | Security       | express-rate-limit, connect-flash        |
@@ -158,8 +158,8 @@ Add these to your `.env` file:
 ```
 MONGO_URL=mongodb://127.0.0.1:27017/notes_app
 SESSION_SECRET=your_random_secret_here
-EMAIL=your_gmail@gmail.com
-EMAIL_PASSWORD=your_gmail_app_password
+BREVO_EMAIL=your_brevo_smtp_login
+BREVO_SMTP_KEY=your_brevo_smtp_key
 ```
 
 ```bash
@@ -254,8 +254,12 @@ Open your browser and visit **http://localhost:8080**
 }
 ```
 
+All project dependencies are managed through `package.json`.
+
+### Install Dependencies
+
 ```bash
-npm install express mongoose ejs method-override passport passport-local bcrypt express-session connect-mongo connect-flash express-rate-limit nodemailer dotenv
+npm install
 ```
 
 ---

@@ -4,7 +4,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.js");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const transporter = require("../utils/mailer.js");
 const rateLimit = require("express-rate-limit");
 

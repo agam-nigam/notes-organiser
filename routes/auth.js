@@ -4,14 +4,21 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const User = require("../models/user.js");
 const crypto = require("crypto");
-const { Resend } = require("resend");
-const transporter = require("../utils/mailer.js");
+const sendResetEmail = require("../utils/mailer.js");
 const rateLimit = require("express-rate-limit");
 
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
-    message: "Too many login attempts, please try again after 15 minutes"
+    max: 5,
+    // message: "Too many login attempts, please try again after 15 minutes"
+    handler: (req, res) => {
+        req.flash(
+            "error",
+            "Too many login attempts. Please try again after 15 minutes."
+        );
+
+        return res.redirect("/login");
+    }
 });
 
 // Register
@@ -64,7 +71,7 @@ router.get("/login", (req, res) => {
     res.render("login.ejs");
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", loginLimiter, (req, res, next) => {
     passport.authenticate("local", (err, user) => {
         if (err) return next(err);
         if (!user) {
@@ -83,7 +90,7 @@ router.post("/login", (req, res, next) => {
 router.get("/logout", (req, res) => {
     req.logout(() => {
         req.flash("success", "Logged out successfully");
-        res.redirect("/login");
+        return res.redirect("/login");
     });
 });
 
@@ -93,40 +100,38 @@ router.get("/forgot-password", (req, res) => {
 });
 
 router.post("/forgot-password", async (req, res) => {
-    const { email } = req.body;
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            req.flash("error", "No account found.");
+            return res.redirect("/forgot-password");
+        }
+        const token = crypto.randomBytes(32).toString("hex");
+        user.resetToken = token;
 
-    const user = await User.findOne({ email });
+        const THIRTY_MINUTES = 1000 * 60 * 30;
+        user.resetTokenExpiry = Date.now() + THIRTY_MINUTES;
+        await user.save();
 
-    if (!user) {
-        req.flash("error", "No account found.");
+        const resetURL = `${process.env.BASE_URL}/reset-password/${token}`;
+        await sendResetEmail(
+            user.email,
+            resetURL
+        );
+        req.flash(
+            "success",
+            "Password reset email sent."
+        );
+        return res.redirect("/login");
+    } catch (err) {
+        console.error("Forgot Password Error:", err);
+        req.flash(
+            "error",
+            "Failed to send reset email."
+        );
         return res.redirect("/forgot-password");
     }
-    const token = crypto.randomBytes(32).toString("hex");
-    user.resetToken = token;
-    const THIRTY_MINUTES = 1000 * 60 * 30;
-    user.resetTokenExpiry = Date.now() + THIRTY_MINUTES;
-    await user.save();
-    const resetURL =
-        `http://localhost:8080/reset-password/${token}`;
-
-    await transporter.sendMail({
-        from: process.env.EMAIL,
-        to: user.email,
-        subject: "Password Reset",
-        html: `
-            <p>Click below to reset password:</p>
-            <a href="${resetURL}">
-                Reset Password
-            </a>
-        `
-    });
-
-    req.flash(
-        "success",
-        "Password reset email sent."
-    );
-
-    res.redirect("/login");
 });
 
 router.get("/reset-password/:token", async (req, res) => {
@@ -169,7 +174,7 @@ router.post("/reset-password/:token", async (req, res) => {
         "Password reset successful."
     );
 
-    res.redirect("/login");
+    return res.redirect("/login");
 });
 
 module.exports = router; 

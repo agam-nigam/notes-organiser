@@ -433,7 +433,8 @@ form>button:not([type]) {
   color: var(--text);
   word-break: break-word;
   overflow-wrap: break-word;
-  flex: 1;                   /* prevents pushing close button */
+  flex: 1;
+  /* prevents pushing close button */
   margin-right: 1rem;
 }
 
@@ -517,6 +518,9 @@ textarea {
 .note-card {
   overflow: hidden;
   min-width: 0;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
 }
 
 .note:last-of-type {
@@ -534,8 +538,10 @@ textarea {
   word-wrap: break-word;
   line-height: 1.5;
   white-space: pre-wrap;
+  max-height: 100px;
 }
 
+/* Read More button */
 .read-more-btn {
   font-size: 0.65rem;
   padding: 0.2rem 0.5rem;
@@ -552,6 +558,10 @@ textarea {
   color: #fff;
   box-shadow: 2px 2px 0 var(--accent);
   transform: none;
+}
+
+.read-more-container {
+    min-height: 32px;
 }
 
 /* time note */
@@ -600,7 +610,7 @@ textarea {
   gap: 0.5rem;
   flex-wrap: wrap;
   padding-top: 0.75rem;
-  margin-top: 0.25rem;
+  margin-top: auto;
   border-top: 2px solid var(--border);
 }
 
@@ -634,18 +644,19 @@ textarea {
   box-shadow: 2px 2px 0 var(--pin-border);
 }
 
-.note-footer form > button:hover, 
-.note-header form > input[type="text"]:hover, 
-.note-header form > button:hover {
+.note-footer form>button:hover,
+.note-header form>input[type="text"]:hover,
+.note-header form>button:hover {
   box-shadow: 3px 3px 0 var(--accent);
   transform: translate(-1px, -1px);
 }
 
-.note-footer form > button:active,
-.note-header form > button:active {
+.note-footer form>button:active,
+.note-header form>button:active {
   transform: translate(2px, 2px);
   box-shadow: none;
 }
+
 /* ─── Create / Edit Pages ───────────────── */
 body>h2 {
   font-size: clamp(1.6rem, 4vw, 2.4rem);
@@ -667,7 +678,7 @@ body.form-page {
   padding-top: 2rem;
 }
 
-body.form-page > form {
+body.form-page>form {
   width: 100%;
   max-width: 520px;
 }

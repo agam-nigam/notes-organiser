@@ -8,7 +8,7 @@
 <div class="note">
     Content:
     <p class="details content-text"><%= note.content.length > 100 ? note.content.substring(0, 100) + "..." : note.content %></p>
-    <% if (note.content.length > 100) { %>
+    <% if (note.content.split('\n').length > 4 || note.content.length > 100) { %>
         <button class="read-more-btn" onclick="openModal('<%= note._id %>')">Read More</button>
     <% } %>
 </div>

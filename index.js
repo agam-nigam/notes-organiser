@@ -1,4 +1,4 @@
-require('dns').setDefaultResultOrder('ipv4first');
+// require('dns').setDefaultResultOrder('ipv4first');
 require("dotenv").config();
 
 const express = require("express");
@@ -12,7 +12,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const bcrypt = require("bcrypt");
 const User = require("./models/user.js");
-const transporter = require("./utils/mailer.js");
+const sendResetEmail = require("./utils/mailer.js");
 
 // ─── App Settings ────────────────────────
 app.set("views", path.join(__dirname, "views"));
@@ -73,7 +73,7 @@ main()
     .catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect(process.env.MONGO_URL || "mongodb://127.0.0.1:27017/notes_app");
+    await mongoose.connect(process.env.MONGO_URL);
 }
 
 // ─── Server ──────────────────────────────

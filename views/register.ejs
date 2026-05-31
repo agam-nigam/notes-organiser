@@ -1,26 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
     <%- include("partials/flash") %>
-    <h2>Create Account</h2>
-    <div class="form-container">
-        <% if (typeof error !== 'undefined') { %>
-            <p class="auth-error"><%= error %></p>
-        <% } %>
-        <form action="/register" method="post">
-            <input type="text" name="username" placeholder="Username" required />
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password (min 8 chars)" required />
-            <button type="submit">Register</button>
-        </form>
-        <p class="auth-link">Already have an account? <a href="/login">Login</a></p>
-    </div>
-    <%- include("partials/footer") %>
+        <h2>Create Account</h2>
+        <div class="form-container">
+            <form action="/register" method="post">
+                <!-- username -->
+                <label class="input-label">Username:</label>
+                <input type="text" name="username" placeholder="Enter your username" minlength="3" maxlength="20"
+                    pattern="^[a-zA-Z][a-zA-Z0-9_]*$" title="Must start with a letter, letters/numbers/underscores only"
+                    required />
+                <small class="input-hint" id="username-hint">3-20 characters · letters/numbers/underscores
+                    only</small>
+
+                <!-- email -->
+                <label class="input-label">Email:</label>
+                <input type="email" name="email" placeholder="Enter your email" maxlength="254" required />
+
+                <!-- password -->
+                <label class="input-label">Password:</label>
+                <input type="password" name="password" placeholder="Enter your password" minlength="8" maxlength="128"
+                    required />
+                <small class="input-hint" id="password-hint">8-128 characters</small>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p class="auth-link">Already have an account? <a href="/login">Login</a></p>
+        </div>
+        <%- include("partials/footer") %>
+
+            <script>
+                const usernameInput = document.querySelector('input[name="username"]');
+                const passwordInput = document.querySelector('input[name="password"]');
+                const usernameHint = document.getElementById("username-hint");
+                const passwordHint = document.getElementById("password-hint");
+
+                usernameInput.addEventListener("input", () => {
+                    const val = usernameInput.value;
+                    const valid = /^[a-zA-Z][a-zA-Z0-9_]*$/.test(val) && val.length >= 3 && val.length <= 20;
+                    usernameHint.className = "input-hint " + (val.length > 0 ? (valid ? "hint-success" : "hint-error") : "");
+                    usernameHint.innerText = val.length === 0
+                        ? "3–20 chars · letters, numbers, _ only"
+                        : valid
+                            ? "✓ Looks good"
+                            : "3–20 chars · letters, numbers, _ only";
+                });
+
+                passwordInput.addEventListener("input", () => {
+                    const val = passwordInput.value;
+                    const valid = val.length >= 8 && val.length <= 128;
+                    passwordHint.className = "input-hint " + (val.length > 0 ? (valid ? "hint-success" : "hint-error") : "");
+                    passwordHint.innerText = val.length === 0
+                        ? "8–128 characters"
+                        : valid
+                            ? "✓ Looks good"
+                            : `${8 - val.length} more characters needed`;
+                });
+            </script>
 </body>
+
 </html>

@@ -26,18 +26,51 @@ router.get("/register", (req, res) => {
     res.render("register.ejs");
 });
 
-router.post("/register", async (req, res) => {
-    const { username, email, password } = req.body;
+const commonPasswords = [
+    "12345678", "password", "password123", "123456789", "qwerty123", "qwerty1234" , "admin123", "letmein123"
+];
 
-    // password validation
+router.post("/register", async (req, res) => {
+    let { username, password, email } = req.body;
+
+    // username
+    if (username.length < 3 || username.length > 20) {
+        req.flash("error", "Username must be between 3 and 20 characters");
+        return res.redirect("/register");
+    }
+    if (!/^[a-zA-Z][a-zA-Z0-9_]*$/.test(username)) {
+        req.flash("error", "Username must start with a letter and contain only letters, numbers or underscores");
+        return res.redirect("/register");
+    }
+
+    // password
     if (password.length < 8) {
         req.flash("error", "Password must be at least 8 characters");
         return res.redirect("/register");
     }
+    if (password.length > 128) {
+        req.flash("error", "Password cannot exceed 128 characters");
+        return res.redirect("/register");
+    }
+    if (commonPasswords.includes(password.toLowerCase())) {
+        req.flash("error", "Password is too common, please choose a stronger one");
+        return res.redirect("/register");
+    }
 
+    // email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        req.flash("error", "Please enter a valid email address");
+        return res.redirect("/register");
+    }
+
+    // store username as lowercase
+    username = username.toLowerCase();
+    // store email as lowercase
+    email = email.toLowerCase();
+    
     // username check
     const existingUser = await User.findOne({ username });
-
     if (existingUser) {
         req.flash("error", "Username already taken");
         return res.redirect("/register");
@@ -45,7 +78,6 @@ router.post("/register", async (req, res) => {
 
     // email check
     const existingEmail = await User.findOne({ email });
-
     if (existingEmail) {
         req.flash("error", "Email already registered");
         return res.redirect("/register");
@@ -55,13 +87,9 @@ router.post("/register", async (req, res) => {
     const hashed = await bcrypt.hash(password, 12);
 
     // create user
-    const user = new User({
-        username,
-        email,
-        password: hashed
-    });
-
+    const user = new User({ username, email, password: hashed });
     await user.save();
+
     req.flash("success", "Account created! Please login");
     res.redirect("/login");
 });

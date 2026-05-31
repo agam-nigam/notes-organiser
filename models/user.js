@@ -13,10 +13,12 @@ const userSchema = new Schema({
         minlength: [8, 'Password must be at least 8 characters long']
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
-    },
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+},
 
     resetToken: String,
     resetTokenExpiry: Date

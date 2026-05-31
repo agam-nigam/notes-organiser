@@ -859,7 +859,7 @@ body>h2:not(.heading) {
   color: var(--muted);
 }
 
-/* ─── Create / Edit / Auth Pages ───────── */
+/* ─── Create / Edit / Register / Auth Pages ───────── */
 body:has(> .form-container) {
   display: flex;
   flex-direction: column;
@@ -948,6 +948,34 @@ input[type="password"]:focus {
   transform: translate(-1px, -1px);
 }
 
+/* ─── Input Labels & Hints ──────────────── */
+.input-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: -0.3rem;
+}
+
+.input-hint {
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: -0.3rem;
+  line-height: 1.4;
+}
+
+.hint-success {
+  color: #2D7A2D;
+}
+
+.hint-error {
+  color: var(--accent);
+}
+
 /* ─── Auth Links & Errors ───────────────── */
 .forgot-wrapper,
 .auth-link {
@@ -957,6 +985,7 @@ input[type="password"]:focus {
   color: var(--muted);
   text-align: center;
   margin-top: 0.75rem;
+  margin-bottom: 2rem; 
 }
 
 .auth-link a {
